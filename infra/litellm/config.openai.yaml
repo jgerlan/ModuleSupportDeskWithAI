@@ -1,0 +1,25 @@
+# Complete configuration for the optional OpenAI overlay.
+# Keep the local alias available alongside the new remote alias.
+model_list:
+  - model_name: supportdesk-analysis
+    litellm_params:
+      model: ollama_chat/qwen3:1.7b
+      api_base: http://host.docker.internal:11434
+      timeout: 110
+
+  - model_name: supportdesk-openai
+    litellm_params:
+      model: os.environ/OPENAI_MODEL
+      api_key: os.environ/OPENAI_API_KEY
+      timeout: 110
+
+litellm_settings:
+  request_timeout: 110
+  num_retries: 0
+  turn_off_message_logging: true
+  success_callback: []
+  failure_callback: []
+
+router_settings:
+  num_retries: 0
+

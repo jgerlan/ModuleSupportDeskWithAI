@@ -1,0 +1,13 @@
+<div class="shell">
+  <aside>
+    <a class="brand" routerLink="/dashboard"><span aria-hidden="true">SD</span> Support Desk</a>
+    <nav aria-label="Main navigation">
+      <a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page">Dashboard</a>
+      <a routerLink="/tickets" routerLinkActive="active">Tickets</a>
+    </nav>
+  </aside>
+  <div class="workspace">
+    <header>Support workspace</header>
+    <main><router-outlet /></main>
+  </div>
+</div>

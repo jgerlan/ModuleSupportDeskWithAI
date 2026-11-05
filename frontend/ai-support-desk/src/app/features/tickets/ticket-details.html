@@ -1,0 +1,84 @@
+<div class="page-heading">
+  <div>
+    <h1>Ticket details</h1>
+    <a routerLink="/tickets">Back to tickets</a>
+  </div>
+  @if (ticket(); as item) {
+    <div class="actions">
+      <button mat-flat-button [disabled]="analyzing() || deleting()" (click)="analyze()">
+        {{ analyzing() ? 'Analisando…' : 'Analyze with AI' }}
+      </button>
+      <a mat-stroked-button [routerLink]="['/tickets', item.id, 'edit']" [disabled]="deleting()"
+        >Edit ticket</a
+      >
+      <button mat-stroked-button [disabled]="deleting()" (click)="confirmDelete(item)">
+        Delete ticket
+      </button>
+    </div>
+  }
+</div>
+@if (loading() || deleting()) {
+  <mat-progress-bar
+    mode="indeterminate"
+    [attr.aria-label]="deleting() ? 'Deleting ticket' : 'Loading ticket'"
+  />
+}
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (ticket(); as item) {
+  <article class="surface">
+    <h2>{{ item.title }}</h2>
+    <p class="description">{{ item.description }}</p>
+    <dl>
+      <div>
+        <dt>Category</dt>
+        <dd>{{ item.category }}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>
+          <span class="badge" [attr.data-value]="item.status">{{ statusLabel(item.status) }}</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Priority</dt>
+        <dd>
+          <span class="badge" [attr.data-value]="item.priority">{{ item.priority }}</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Created</dt>
+        <dd>{{ item.createdAt | date: 'medium' : 'UTC' }} UTC</dd>
+      </div>
+      <div>
+        <dt>Updated</dt>
+        <dd>
+          {{ item.updatedAt ? (item.updatedAt | date: 'medium' : 'UTC') + ' UTC' : 'Not updated' }}
+        </dd>
+      </div>
+      <div>
+        <dt>Resolved</dt>
+        <dd>
+          {{
+            item.resolvedAt ? (item.resolvedAt | date: 'medium' : 'UTC') + ' UTC' : 'Not resolved'
+          }}
+        </dd>
+      </div>
+      <div>
+        <dt>Ticket ID</dt>
+        <dd>{{ item.id }}</dd>
+      </div>
+    </dl>
+  </article>
+}
+
+@if (analyzing()) {
+  <mat-progress-bar mode="indeterminate" aria-label="Analisando ticket com IA" />
+}
+@if (analysisError()) {
+  <p class="error" role="alert">{{ analysisError() }}</p>
+}
+@if (analysis(); as result) {
+  <app-ticket-analysis [analysis]="result" />
+}

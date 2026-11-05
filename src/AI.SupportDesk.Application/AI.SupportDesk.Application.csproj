@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../AI.SupportDesk.Domain/AI.SupportDesk.Domain.csproj" />
+  </ItemGroup>
+</Project>

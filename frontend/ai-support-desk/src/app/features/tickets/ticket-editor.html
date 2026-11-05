@@ -1,0 +1,66 @@
+<div class="page-heading">
+  <div>
+    <h1>{{ id() ? 'Edit ticket' : 'New ticket' }}</h1>
+    <p class="muted">Describe the issue and set its status and priority.</p>
+  </div>
+</div>
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" aria-label="Loading ticket" />
+}
+@if (loadError()) {
+  <p class="error" role="alert">{{ loadError() }}</p>
+  <a mat-stroked-button routerLink="/tickets">Back to tickets</a>
+}
+@if (!loading() && !loadError()) {
+  <form class="surface" [formGroup]="form" (ngSubmit)="save()" [attr.aria-busy]="saving()">
+    @for (field of fields; track field.key) {
+      <mat-form-field appearance="outline">
+        <mat-label>{{ field.label }}</mat-label>
+        @if (field.key === 'description') {
+          <textarea
+            matInput
+            rows="6"
+            [id]="field.key"
+            [formControlName]="field.key"
+            required
+          ></textarea>
+        } @else {
+          <input matInput [id]="field.key" [formControlName]="field.key" required />
+        }
+        <mat-error>{{ fieldError(field.key, field.label, field.limit) }}</mat-error>
+      </mat-form-field>
+    }
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label
+        ><mat-select formControlName="status" required>
+          @for (status of statuses; track status) {
+            <mat-option [value]="status">{{ statusLabel(status) }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ fieldError('status', 'Status') }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label
+        ><mat-select formControlName="priority" required>
+          @for (priority of priorities; track priority) {
+            <mat-option [value]="priority">{{ priority }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ fieldError('priority', 'Priority') }}</mat-error>
+      </mat-form-field>
+    </div>
+    @if (submitError()) {
+      <p class="error" role="alert">{{ submitError() }}</p>
+    }
+    @if (saving()) {
+      <mat-progress-bar mode="indeterminate" aria-label="Saving ticket" />
+    }
+    <div class="actions">
+      <button mat-flat-button type="submit" [disabled]="saving()">
+        {{ saving() ? 'Saving…' : 'Save ticket' }}
+      </button>
+      <a mat-stroked-button [routerLink]="cancelLink()" [disabled]="saving()">Cancel</a>
+    </div>
+  </form>
+}

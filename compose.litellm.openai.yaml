@@ -1,0 +1,9 @@
+# Optional overlay. Fill the OpenAI variables before using this configuration.
+services:
+  litellm:
+    volumes:
+      - ./infra/litellm/config.openai.yaml:/app/config.yaml:ro
+    environment:
+      OPENAI_MODEL: "${OPENAI_MODEL:?Set OPENAI_MODEL in .env using the openai/ prefix}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:?Set OPENAI_API_KEY in .env}"
+

@@ -1,0 +1,17 @@
+model_list:
+  - model_name: supportdesk-analysis
+    litellm_params:
+      model: ollama_chat/qwen3:1.7b
+      api_base: http://host.docker.internal:11434
+      timeout: 110
+
+litellm_settings:
+  request_timeout: 110
+  num_retries: 0
+  turn_off_message_logging: true
+  success_callback: []
+  failure_callback: []
+
+router_settings:
+  num_retries: 0
+
